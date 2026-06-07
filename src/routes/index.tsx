@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SgpaCalculator } from "@/components/SgpaCalculator";
 import { CgpaCalculator } from "@/components/CgpaCalculator";
 import { GradeScaleTable } from "@/components/GradeScaleTable";
+import { SeoContent } from "@/components/SeoContent";
 
 export const Route = createFileRoute("/")({
   head: () => ({
