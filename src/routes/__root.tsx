@@ -77,14 +77,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "Superior Cgpa and Sgpa Calculator with Pdf Report" },
+      { name: "description", content: "Calculate your Sgpa and Cgpa - Superior University" },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "Superior Cgpa and Sgpa Calculator with Pdf Report" },
+      { property: "og:description", content: "Calculate your Sgpa and Cgpa - Superior University" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Superior Cgpa and Sgpa Calculator with Pdf Report" },
+      { name: "twitter:description", content: "Calculate your Sgpa and Cgpa - Superior University" },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/97347066-2470-48a8-8af4-ba6e1c37ef46/id-preview-122d1060--1dc1d446-59ac-4916-800b-e273b0cfbdf0.lovable.app-1780796451223.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/97347066-2470-48a8-8af4-ba6e1c37ef46/id-preview-122d1060--1dc1d446-59ac-4916-800b-e273b0cfbdf0.lovable.app-1780796451223.png" },
     ],
     links: [
       {
