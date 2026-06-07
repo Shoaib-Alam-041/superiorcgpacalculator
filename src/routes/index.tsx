@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { GraduationCap } from "lucide-react";
+import { GraduationCap, Linkedin } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SgpaCalculator } from "@/components/SgpaCalculator";
 import { CgpaCalculator } from "@/components/CgpaCalculator";
