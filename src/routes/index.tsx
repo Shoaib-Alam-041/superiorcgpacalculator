@@ -66,6 +66,8 @@ function Index() {
 
         <GradeScaleTable />
 
+        <SeoContent />
+
         <footer className="mt-10 border-t border-border pb-6 pt-6 text-center">
           <p className="text-xs text-muted-foreground">
             Unofficial tool. Verify results with your transcript.
