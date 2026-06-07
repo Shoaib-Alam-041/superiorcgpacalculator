@@ -65,8 +65,19 @@ function Index() {
 
         <GradeScaleTable />
 
-        <footer className="mt-10 pb-6 text-center text-xs text-muted-foreground">
-          Unofficial tool. Verify results with your transcript.
+        <footer className="mt-10 border-t border-border pb-6 pt-6 text-center">
+          <p className="text-xs text-muted-foreground">
+            Unofficial tool. Verify results with your transcript.
+          </p>
+          <a
+            href="https://www.linkedin.com/in/shoaib-alam-khan/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-3 inline-flex items-center gap-2 text-sm text-primary hover:underline"
+          >
+            <Linkedin className="h-4 w-4" />
+            Shoaib Alam Khan
+          </a>
         </footer>
       </main>
     </div>
