@@ -35,9 +35,9 @@ const newCourse = (): Course => ({
 });
 
 export function SgpaCalculator() {
-  const [studentName, setStudentName] = useState("");
-  const [semester, setSemester] = useState("");
-  const [courses, setCourses] = useState<Course[]>([newCourse(), newCourse(), newCourse()]);
+  const [studentName, setStudentName] = usePersistentState<string>("sgpa.studentName", "");
+  const [semester, setSemester] = usePersistentState<string>("sgpa.semester", "");
+  const [courses, setCourses] = usePersistentState<Course[]>("sgpa.courses", [newCourse(), newCourse(), newCourse()]);
 
   const rows = useMemo(
     () =>
