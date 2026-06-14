@@ -24,8 +24,26 @@ const newSem = (i: number): Sem => ({
 });
 
 export function CgpaCalculator() {
-  const [studentName, setStudentName] = useState("");
-  const [sems, setSems] = useState<Sem[]>([newSem(1), newSem(2)]);
+  const [studentName, setStudentName] = usePersistentState<string>("cgpa.studentName", "");
+  const [sems, setSems] = usePersistentState<Sem[]>("cgpa.sems", [newSem(1), newSem(2)]);
+
+  // Listen for SGPA saves from the SGPA tab and refresh from storage
+  useEffect(() => {
+    const sync = () => {
+      try {
+        const raw = localStorage.getItem("cgpa.sems");
+        if (raw) setSems(JSON.parse(raw) as Sem[]);
+      } catch {
+        // ignore
+      }
+    };
+    window.addEventListener("cgpa.sems.updated", sync);
+    window.addEventListener("storage", sync);
+    return () => {
+      window.removeEventListener("cgpa.sems.updated", sync);
+      window.removeEventListener("storage", sync);
+    };
+  }, [setSems]);
 
   const rows = useMemo(
     () =>
