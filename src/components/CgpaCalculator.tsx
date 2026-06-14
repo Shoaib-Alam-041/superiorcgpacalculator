@@ -132,9 +132,21 @@ export function CgpaCalculator() {
           ))}
         </div>
 
-        <Button variant="outline" onClick={() => setSems((xs) => [...xs, newSem(xs.length + 1)])}>
-          <Plus className="mr-2 h-4 w-4" /> Add semester
-        </Button>
+        <div className="grid gap-2 sm:grid-cols-2">
+          <Button variant="outline" onClick={() => setSems((xs) => [...xs, newSem(xs.length + 1)])}>
+            <Plus className="mr-2 h-4 w-4" /> Add semester
+          </Button>
+          <Button
+            variant="ghost"
+            onClick={() => {
+              setStudentName("");
+              setSems([newSem(1), newSem(2)]);
+              toast.success("CGPA form reset");
+            }}
+          >
+            <RotateCcw className="mr-2 h-4 w-4" /> Reset
+          </Button>
+        </div>
 
         <div className="grid gap-4 rounded-xl bg-gradient-to-br from-primary to-primary/80 p-6 text-primary-foreground sm:grid-cols-3">
           <div>
