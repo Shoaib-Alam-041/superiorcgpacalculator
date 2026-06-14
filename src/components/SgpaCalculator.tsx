@@ -200,6 +200,43 @@ export function SgpaCalculator() {
           </div>
         </div>
 
+        <div className="grid gap-2 sm:grid-cols-2">
+          <Button
+            variant="secondary"
+            onClick={() => {
+              try {
+                const raw = localStorage.getItem("cgpa.sems");
+                const list: Array<{ id: string; label: string; sgpa: string; credits: string }> =
+                  raw ? JSON.parse(raw) : [];
+                list.push({
+                  id: crypto.randomUUID(),
+                  label: semester || `Semester ${list.length + 1}`,
+                  sgpa: sgpa.toFixed(2),
+                  credits: String(totalCredits),
+                });
+                localStorage.setItem("cgpa.sems", JSON.stringify(list));
+                window.dispatchEvent(new Event("cgpa.sems.updated"));
+                toast.success("SGPA saved to CGPA calculator");
+              } catch {
+                toast.error("Could not save SGPA");
+              }
+            }}
+          >
+            <Save className="mr-2 h-4 w-4" /> Save & Add to CGPA
+          </Button>
+          <Button
+            variant="ghost"
+            onClick={() => {
+              setStudentName("");
+              setSemester("");
+              setCourses([newCourse(), newCourse(), newCourse()]);
+              toast.success("SGPA form reset");
+            }}
+          >
+            <RotateCcw className="mr-2 h-4 w-4" /> Reset
+          </Button>
+        </div>
+
         <Button
           className="w-full"
           size="lg"
