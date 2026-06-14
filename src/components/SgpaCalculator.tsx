@@ -1,5 +1,7 @@
-import { useMemo, useState } from "react";
-import { Plus, Trash2, Download, Calculator } from "lucide-react";
+import { useMemo } from "react";
+import { Plus, Trash2, Download, Calculator, Save, RotateCcw } from "lucide-react";
+import { toast } from "sonner";
+import { usePersistentState } from "@/hooks/usePersistentState";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -33,9 +35,9 @@ const newCourse = (): Course => ({
 });
 
 export function SgpaCalculator() {
-  const [studentName, setStudentName] = useState("");
-  const [semester, setSemester] = useState("");
-  const [courses, setCourses] = useState<Course[]>([newCourse(), newCourse(), newCourse()]);
+  const [studentName, setStudentName] = usePersistentState<string>("sgpa.studentName", "");
+  const [semester, setSemester] = usePersistentState<string>("sgpa.semester", "");
+  const [courses, setCourses] = usePersistentState<Course[]>("sgpa.courses", [newCourse(), newCourse(), newCourse()]);
 
   const rows = useMemo(
     () =>
@@ -196,6 +198,43 @@ export function SgpaCalculator() {
             <div className="text-xs uppercase tracking-wide opacity-80">Courses</div>
             <div className="text-4xl font-bold">{rows.length}</div>
           </div>
+        </div>
+
+        <div className="grid gap-2 sm:grid-cols-2">
+          <Button
+            variant="secondary"
+            onClick={() => {
+              try {
+                const raw = localStorage.getItem("cgpa.sems");
+                const list: Array<{ id: string; label: string; sgpa: string; credits: string }> =
+                  raw ? JSON.parse(raw) : [];
+                list.push({
+                  id: crypto.randomUUID(),
+                  label: semester || `Semester ${list.length + 1}`,
+                  sgpa: sgpa.toFixed(2),
+                  credits: String(totalCredits),
+                });
+                localStorage.setItem("cgpa.sems", JSON.stringify(list));
+                window.dispatchEvent(new Event("cgpa.sems.updated"));
+                toast.success("SGPA saved to CGPA calculator");
+              } catch {
+                toast.error("Could not save SGPA");
+              }
+            }}
+          >
+            <Save className="mr-2 h-4 w-4" /> Save & Add to CGPA
+          </Button>
+          <Button
+            variant="ghost"
+            onClick={() => {
+              setStudentName("");
+              setSemester("");
+              setCourses([newCourse(), newCourse(), newCourse()]);
+              toast.success("SGPA form reset");
+            }}
+          >
+            <RotateCcw className="mr-2 h-4 w-4" /> Reset
+          </Button>
         </div>
 
         <Button

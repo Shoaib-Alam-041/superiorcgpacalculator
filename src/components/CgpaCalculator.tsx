@@ -1,11 +1,13 @@
-import { useMemo, useState } from "react";
-import { Plus, Trash2, Download, GraduationCap } from "lucide-react";
+import { useEffect, useMemo } from "react";
+import { Plus, Trash2, Download, GraduationCap, RotateCcw } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { computeGPA } from "@/lib/grading";
 import { downloadCgpaReport } from "@/lib/report";
+import { usePersistentState } from "@/hooks/usePersistentState";
 
 interface Sem {
   id: string;
@@ -22,8 +24,26 @@ const newSem = (i: number): Sem => ({
 });
 
 export function CgpaCalculator() {
-  const [studentName, setStudentName] = useState("");
-  const [sems, setSems] = useState<Sem[]>([newSem(1), newSem(2)]);
+  const [studentName, setStudentName] = usePersistentState<string>("cgpa.studentName", "");
+  const [sems, setSems] = usePersistentState<Sem[]>("cgpa.sems", [newSem(1), newSem(2)]);
+
+  // Listen for SGPA saves from the SGPA tab and refresh from storage
+  useEffect(() => {
+    const sync = () => {
+      try {
+        const raw = localStorage.getItem("cgpa.sems");
+        if (raw) setSems(JSON.parse(raw) as Sem[]);
+      } catch {
+        // ignore
+      }
+    };
+    window.addEventListener("cgpa.sems.updated", sync);
+    window.addEventListener("storage", sync);
+    return () => {
+      window.removeEventListener("cgpa.sems.updated", sync);
+      window.removeEventListener("storage", sync);
+    };
+  }, [setSems]);
 
   const rows = useMemo(
     () =>
@@ -112,9 +132,21 @@ export function CgpaCalculator() {
           ))}
         </div>
 
-        <Button variant="outline" onClick={() => setSems((xs) => [...xs, newSem(xs.length + 1)])}>
-          <Plus className="mr-2 h-4 w-4" /> Add semester
-        </Button>
+        <div className="grid gap-2 sm:grid-cols-2">
+          <Button variant="outline" onClick={() => setSems((xs) => [...xs, newSem(xs.length + 1)])}>
+            <Plus className="mr-2 h-4 w-4" /> Add semester
+          </Button>
+          <Button
+            variant="ghost"
+            onClick={() => {
+              setStudentName("");
+              setSems([newSem(1), newSem(2)]);
+              toast.success("CGPA form reset");
+            }}
+          >
+            <RotateCcw className="mr-2 h-4 w-4" /> Reset
+          </Button>
+        </div>
 
         <div className="grid gap-4 rounded-xl bg-gradient-to-br from-primary to-primary/80 p-6 text-primary-foreground sm:grid-cols-3">
           <div>
