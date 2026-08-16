@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { Plus, Trash2, Download, Calculator, Save, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
 import { usePersistentState } from "@/hooks/usePersistentState";
@@ -38,6 +38,28 @@ export function SgpaCalculator() {
   const [studentName, setStudentName] = usePersistentState<string>("sgpa.studentName", "");
   const [semester, setSemester] = usePersistentState<string>("sgpa.semester", "");
   const [courses, setCourses] = usePersistentState<Course[]>("sgpa.courses", [newCourse(), newCourse(), newCourse()]);
+
+  // Refresh from storage when a result card fills the fields
+  useEffect(() => {
+    const sync = () => {
+      try {
+        const c = localStorage.getItem("sgpa.courses");
+        if (c) setCourses(JSON.parse(c) as Course[]);
+        const s = localStorage.getItem("sgpa.semester");
+        if (s) setSemester(JSON.parse(s) as string);
+        const n = localStorage.getItem("sgpa.studentName");
+        if (n) setStudentName(JSON.parse(n) as string);
+      } catch {
+        // ignore
+      }
+    };
+    window.addEventListener("sgpa.data.updated", sync);
+    window.addEventListener("storage", sync);
+    return () => {
+      window.removeEventListener("sgpa.data.updated", sync);
+      window.removeEventListener("storage", sync);
+    };
+  }, [setCourses, setSemester, setStudentName]);
 
   const rows = useMemo(
     () =>

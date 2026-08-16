@@ -5,6 +5,7 @@ import { SgpaCalculator } from "@/components/SgpaCalculator";
 import { CgpaCalculator } from "@/components/CgpaCalculator";
 import { GradeScaleTable } from "@/components/GradeScaleTable";
 import { SeoContent } from "@/components/SeoContent";
+import { ResultCardUpload } from "@/components/ResultCardUpload";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -50,6 +51,8 @@ function Index() {
             Download a clean PDF report when you're done.
           </p>
         </section>
+
+        <ResultCardUpload />
 
         <Tabs defaultValue="sgpa" className="mb-8">
           <TabsList className="grid w-full grid-cols-2">
