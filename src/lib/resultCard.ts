@@ -71,10 +71,15 @@ export function parseResultCardLines(lines: string[]): ParsedResultCard {
   let current: ParsedTerm | null = null;
 
   for (const line of lines) {
-    if (!studentName) {
-      const n = line.match(/Name\s+(?:[A-Z0-9-]+-)?([A-Za-z][A-Za-z .]+)/);
-      if (n && !/Father/i.test(line)) studentName = n[1].trim();
+    if (!studentName && /^Name\s/i.test(line)) {
+      const n = line
+        .replace(/^Name\s+/i, "")
+        .split(/\s+(?:Batch|Program|Shift|Department)\b/i)[0]
+        .replace(/^[A-Z0-9]+(?:-[A-Z0-9]+)*-/, "")
+        .trim();
+      if (n) studentName = n;
     }
+
 
     const t = line.match(TERM_RE);
     if (t) {
