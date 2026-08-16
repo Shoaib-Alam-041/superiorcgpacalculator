@@ -108,8 +108,21 @@ export function parseResultCardLines(lines: string[]): ParsedResultCard {
         terms.push(current);
       }
       current.courses.push(course);
+      continue;
+    }
+
+    // Wrapped course-title continuation lines
+    const last = current?.courses[current.courses.length - 1];
+    if (
+      last &&
+      /^[A-Za-z(]/.test(line) &&
+      line.length < 60 &&
+      !/^(Total|Term|Sr#|Code|The Superior|Date:|Academic|Page)/i.test(line)
+    ) {
+      last.title = `${last.title} ${line}`.replace(/\s+/g, " ").trim();
     }
   }
+
 
   return { studentName, terms: terms.filter((x) => x.courses.length > 0) };
 }
