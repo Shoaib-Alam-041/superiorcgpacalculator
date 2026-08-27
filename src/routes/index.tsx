@@ -21,6 +21,73 @@ export const Route = createFileRoute("/")({
         property: "og:description",
         content: "Calculate your SGPA and CGPA instantly and download a PDF report.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          name: "Superior University CGPA & SGPA Calculator",
+          url: "https://superiorcgpacalculator.lovable.app",
+          description:
+            "Free, fast CGPA and SGPA calculator for Superior University students. Calculate grade point average and download a PDF report.",
+          applicationCategory: "EducationalApplication",
+          operatingSystem: "Web",
+          offers: {
+            "@type": "Offer",
+            price: "0",
+            priceCurrency: "USD",
+          },
+          featureList: [
+            "SGPA (semester GPA) calculation",
+            "CGPA (cumulative GPA) calculation",
+            "Upload result card PDF to auto-fill marks",
+            "Download printable PDF report",
+            "Superior University official grading scale",
+          ],
+          publisher: {
+            "@type": "Person",
+            name: "Shoaib Alam Khan",
+            url: "https://www.linkedin.com/in/shoaib-alam-khan/",
+          },
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: [
+            {
+              "@type": "Question",
+              name: "What is the grading scale used by this calculator?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "The calculator uses Superior University's official grading scale: 85-100% A (4.00), 80-84% A- (3.66), 75-79% B+ (3.33), 71-74% B (3.00), 68-70% B- (2.66), 64-67% C+ (2.33), 61-63% C (2.00), 58-60% C- (1.66), 54-57% D+ (1.33), 50-53% D (1.00), below 50% F (0.00).",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "Can I download my calculated results?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Yes. After calculating your SGPA or CGPA you can download a clean printable PDF report of your results.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "Can I upload my result card to auto-fill marks?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Yes. Upload your Superior University result card PDF and the calculator automatically extracts course codes, titles, credit hours and marks to fill the fields.",
+              },
+            },
+          ],
+        }),
+      },
     ],
   }),
   component: Index,
