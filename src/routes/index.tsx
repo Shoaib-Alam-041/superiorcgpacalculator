@@ -10,16 +10,20 @@ import { ResultCardUpload } from "@/components/ResultCardUpload";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Superior University CGPA & SGPA Calculator" },
+      {
+        title:
+          "Superior University CGPA & SGPA Calculator – Free GPA Tool",
+      },
       {
         name: "description",
         content:
-          "Free, fast CGPA and SGPA calculator for Superior University students. Calculate grade point average and download a PDF report.",
+          "Free Superior University CGPA & SGPA calculator. Enter marks or upload your result card to auto-fill grades, compute your GPA instantly, and download a PDF report.",
       },
       { property: "og:title", content: "Superior University CGPA & SGPA Calculator" },
       {
         property: "og:description",
-        content: "Calculate your SGPA and CGPA instantly and download a PDF report.",
+        content:
+          "Free Superior University CGPA & SGPA calculator — auto-fill from your result card, compute GPA instantly, and download a PDF report.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
