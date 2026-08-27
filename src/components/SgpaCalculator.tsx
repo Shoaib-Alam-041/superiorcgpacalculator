@@ -126,16 +126,22 @@ export function SgpaCalculator() {
               className="grid grid-cols-12 gap-2 rounded-lg border border-border bg-card/50 p-3"
             >
               <div className="col-span-12 sm:col-span-4">
-                <Label className="text-xs text-muted-foreground">Course</Label>
+                <Label htmlFor={`course-${c.id}`} className="text-xs text-muted-foreground">
+                  Course
+                </Label>
                 <Input
+                  id={`course-${c.id}`}
                   value={c.name}
                   onChange={(e) => update(c.id, { name: e.target.value })}
                   placeholder={`Course ${i + 1}`}
                 />
               </div>
               <div className="col-span-4 sm:col-span-2">
-                <Label className="text-xs text-muted-foreground">Credits</Label>
+                <Label htmlFor={`credits-${c.id}`} className="text-xs text-muted-foreground">
+                  Credits
+                </Label>
                 <Input
+                  id={`credits-${c.id}`}
                   type="number"
                   min="0"
                   step="0.5"
@@ -144,12 +150,16 @@ export function SgpaCalculator() {
                 />
               </div>
               <div className="col-span-4 sm:col-span-2">
-                <Label className="text-xs text-muted-foreground">Input</Label>
+                <Label htmlFor={`mode-${c.id}`} className="text-xs text-muted-foreground">
+                  Input
+                </Label>
                 <Select
                   value={c.mode}
                   onValueChange={(v: "grade" | "marks") => update(c.id, { mode: v })}
                 >
-                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectTrigger id={`mode-${c.id}`} aria-label="Input mode">
+                    <SelectValue />
+                  </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="grade">Grade</SelectItem>
                     <SelectItem value="marks">Marks %</SelectItem>
@@ -157,12 +167,17 @@ export function SgpaCalculator() {
                 </Select>
               </div>
               <div className="col-span-4 sm:col-span-2">
-                <Label className="text-xs text-muted-foreground">
+                <Label
+                  htmlFor={c.mode === "grade" ? `grade-${c.id}` : `marks-${c.id}`}
+                  className="text-xs text-muted-foreground"
+                >
                   {c.mode === "grade" ? "Grade" : "Marks"}
                 </Label>
                 {c.mode === "grade" ? (
                   <Select value={c.grade} onValueChange={(v) => update(c.id, { grade: v })}>
-                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectTrigger id={`grade-${c.id}`} aria-label="Grade">
+                      <SelectValue />
+                    </SelectTrigger>
                     <SelectContent>
                       {GRADE_SCALE.map((g) => (
                         <SelectItem key={g.grade} value={g.grade}>
@@ -173,6 +188,7 @@ export function SgpaCalculator() {
                   </Select>
                 ) : (
                   <Input
+                    id={`marks-${c.id}`}
                     type="number"
                     min="0"
                     max="100"
