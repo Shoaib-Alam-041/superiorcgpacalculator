@@ -90,6 +90,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:description", content: "Calculate your Sgpa and Cgpa - Superior University" },
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/97347066-2470-48a8-8af4-ba6e1c37ef46/id-preview-122d1060--1dc1d446-59ac-4916-800b-e273b0cfbdf0.lovable.app-1780796451223.png" },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/97347066-2470-48a8-8af4-ba6e1c37ef46/id-preview-122d1060--1dc1d446-59ac-4916-800b-e273b0cfbdf0.lovable.app-1780796451223.png" },
+      {
+        name: "google-site-verification",
+        content: "AfoNyu4Ml0Yy7P5j9OI7aiguLK-WJbj0GWXjz8ssD0o",
+      },
     ],
     links: [
       {
