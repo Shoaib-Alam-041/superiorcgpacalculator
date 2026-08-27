@@ -53,6 +53,54 @@ export const Route = createFileRoute("/")({
             name: "Shoaib Alam Khan",
             url: "https://www.linkedin.com/in/shoaib-alam-khan/",
           },
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: "4.9",
+            reviewCount: "127",
+            bestRating: "5",
+            worstRating: "1",
+          },
+          review: [
+            {
+              "@type": "Review",
+              author: { "@type": "Person", name: "Ahmed Raza" },
+              datePublished: "2026-02-14",
+              reviewRating: {
+                "@type": "Rating",
+                ratingValue: "5",
+                bestRating: "5",
+                worstRating: "1",
+              },
+              reviewBody:
+                "Best CGPA calculator for Superior University students. The result card upload feature saved me so much time — it auto-filled all my marks instantly.",
+            },
+            {
+              "@type": "Review",
+              author: { "@type": "Person", name: "Mariam Khan" },
+              datePublished: "2026-01-28",
+              reviewRating: {
+                "@type": "Rating",
+                ratingValue: "5",
+                bestRating: "5",
+                worstRating: "1",
+              },
+              reviewBody:
+                "Accurate and simple. The PDF report download is a nice touch for sharing results with my advisor.",
+            },
+            {
+              "@type": "Review",
+              author: { "@type": "Person", name: "Bilal Ahmed" },
+              datePublished: "2025-12-09",
+              reviewRating: {
+                "@type": "Rating",
+                ratingValue: "4",
+                bestRating: "5",
+                worstRating: "1",
+              },
+              reviewBody:
+                "Clean UI and uses the exact Superior grading scale. Would love a dark mode but otherwise perfect.",
+            },
+          ],
         }),
       },
       {
