@@ -154,8 +154,8 @@ function Index() {
             <GraduationCap className="h-6 w-6" />
           </div>
           <div>
-            <h1 className="text-lg font-bold leading-tight">Superior University</h1>
-            <p className="text-xs text-muted-foreground">CGPA &amp; SGPA Calculator</p>
+            <h1 className="text-lg font-bold leading-tight">Superior University CGPA & SGPA Calculator</h1>
+            <p className="text-xs text-muted-foreground">Free GPA tool with result card upload</p>
           </div>
         </div>
       </header>
