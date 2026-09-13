@@ -88,16 +88,22 @@ export function CgpaCalculator() {
               className="grid grid-cols-12 gap-2 rounded-lg border border-border bg-card/50 p-3"
             >
               <div className="col-span-12 sm:col-span-5">
-                <Label className="text-xs text-muted-foreground">Label</Label>
+                <Label htmlFor={`semester-label-${s.id}`} className="text-xs text-muted-foreground">
+                  Label
+                </Label>
                 <Input
+                  id={`semester-label-${s.id}`}
                   value={s.label}
                   onChange={(e) => update(s.id, { label: e.target.value })}
                   placeholder={`Semester ${i + 1}`}
                 />
               </div>
               <div className="col-span-5 sm:col-span-3">
-                <Label className="text-xs text-muted-foreground">SGPA</Label>
+                <Label htmlFor={`semester-sgpa-${s.id}`} className="text-xs text-muted-foreground">
+                  SGPA
+                </Label>
                 <Input
+                  id={`semester-sgpa-${s.id}`}
                   type="number"
                   min="0"
                   max="4"
@@ -108,8 +114,11 @@ export function CgpaCalculator() {
                 />
               </div>
               <div className="col-span-5 sm:col-span-3">
-                <Label className="text-xs text-muted-foreground">Credits</Label>
+                <Label htmlFor={`semester-credits-${s.id}`} className="text-xs text-muted-foreground">
+                  Credits
+                </Label>
                 <Input
+                  id={`semester-credits-${s.id}`}
                   type="number"
                   min="0"
                   value={s.credits}
