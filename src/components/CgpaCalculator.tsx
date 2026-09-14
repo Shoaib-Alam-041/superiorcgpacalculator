@@ -27,6 +27,7 @@ const newSem = (i: number): Sem => ({
 export function CgpaCalculator() {
   const [studentName, setStudentName] = usePersistentState<string>("cgpa.studentName", "");
   const [sems, setSems] = usePersistentState<Sem[]>("cgpa.sems", [newSem(1), newSem(2)]);
+  const [repeats, setRepeats] = usePersistentState<Repeat[]>("cgpa.repeats", []);
 
   // Listen for SGPA saves from the SGPA tab and refresh from storage
   useEffect(() => {
@@ -56,8 +57,26 @@ export function CgpaCalculator() {
     [sems],
   );
 
-  const cgpa = useMemo(() => computeGPA(rows), [rows]);
+  const baseCgpa = useMemo(() => computeGPA(rows), [rows]);
   const totalCredits = rows.reduce((a, b) => a + b.credits, 0);
+
+  // Summer / repeated courses: the old grade is replaced by the new one.
+  const repeatRows = useMemo(
+    () =>
+      repeats.map((r) => {
+        const credits = Number(r.credits) || 0;
+        const oldPoint = getGradeByName(r.oldGrade)?.point ?? 0;
+        const newPoint = getGradeByName(r.newGrade)?.point ?? 0;
+        return { ...r, credits, oldPoint, newPoint, delta: credits * (newPoint - oldPoint) };
+      }),
+    [repeats],
+  );
+
+  const deltaPoints = repeatRows.reduce((a, r) => a + r.delta, 0);
+  const cgpa =
+    totalCredits > 0
+      ? Math.max(0, Math.min(4, (baseCgpa * totalCredits + deltaPoints) / totalCredits))
+      : 0;
 
   const update = (id: string, patch: Partial<Sem>) =>
     setSems((xs) => xs.map((s) => (s.id === id ? { ...s, ...patch } : s)));
@@ -151,6 +170,7 @@ export function CgpaCalculator() {
             onClick={() => {
               setStudentName("");
               setSems([newSem(1), newSem(2)]);
+              setRepeats([]);
               toast.success("CGPA form reset");
             }}
           >
@@ -158,10 +178,17 @@ export function CgpaCalculator() {
           </Button>
         </div>
 
+        <SummerRepeats repeats={repeats} onChange={setRepeats} />
+
         <div className="grid gap-4 rounded-xl bg-gradient-to-br from-primary to-primary/80 p-6 text-primary-foreground sm:grid-cols-3">
           <div>
             <div className="text-xs uppercase tracking-wide opacity-80">Your CGPA</div>
             <div className="text-4xl font-bold">{cgpa.toFixed(2)}</div>
+            {repeatRows.length > 0 && (
+              <div className="mt-1 text-xs opacity-80">
+                Before summer replacement: {baseCgpa.toFixed(2)}
+              </div>
+            )}
           </div>
           <div>
             <div className="text-xs uppercase tracking-wide opacity-80">Total Credits</div>
@@ -184,6 +211,14 @@ export function CgpaCalculator() {
                 sgpa: r.point,
                 credits: r.credits,
               })),
+              repeats: repeatRows.map((r) => ({
+                course: r.course || "Repeated course",
+                credits: r.credits,
+                oldGrade: r.oldGrade,
+                newGrade: r.newGrade,
+                delta: r.delta,
+              })),
+              baseCgpa,
               cgpa,
               totalCredits,
             })
