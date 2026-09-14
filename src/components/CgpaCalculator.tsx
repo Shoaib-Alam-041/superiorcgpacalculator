@@ -168,10 +168,20 @@ export function CgpaCalculator() {
           <Button
             variant="ghost"
             onClick={() => {
+              const prev = { studentName, sems, repeats };
               setStudentName("");
               setSems([newSem(1), newSem(2)]);
               setRepeats([]);
-              toast.success("CGPA form reset");
+              toast.success("CGPA form reset", {
+                action: {
+                  label: "Undo",
+                  onClick: () => {
+                    setStudentName(prev.studentName);
+                    setSems(prev.sems);
+                    setRepeats(prev.repeats);
+                  },
+                },
+              });
             }}
           >
             <RotateCcw className="mr-2 h-4 w-4" /> Reset

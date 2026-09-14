@@ -265,10 +265,20 @@ export function SgpaCalculator() {
           <Button
             variant="ghost"
             onClick={() => {
+              const prev = { studentName, semester, courses };
               setStudentName("");
               setSemester("");
               setCourses([newCourse(), newCourse(), newCourse()]);
-              toast.success("SGPA form reset");
+              toast.success("SGPA form reset", {
+                action: {
+                  label: "Undo",
+                  onClick: () => {
+                    setStudentName(prev.studentName);
+                    setSemester(prev.semester);
+                    setCourses(prev.courses);
+                  },
+                },
+              });
             }}
           >
             <RotateCcw className="mr-2 h-4 w-4" /> Reset
