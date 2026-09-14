@@ -1,5 +1,5 @@
-import { useEffect, useMemo } from "react";
-import { Plus, Trash2, Download, GraduationCap, RotateCcw } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { Plus, Trash2, Download, GraduationCap, RotateCcw, Undo2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,6 +28,7 @@ export function CgpaCalculator() {
   const [studentName, setStudentName] = usePersistentState<string>("cgpa.studentName", "");
   const [sems, setSems] = usePersistentState<Sem[]>("cgpa.sems", [newSem(1), newSem(2)]);
   const [repeats, setRepeats] = usePersistentState<Repeat[]>("cgpa.repeats", []);
+  const [snapshot, setSnapshot] = useState<{ studentName: string; sems: Sem[]; repeats: Repeat[] } | null>(null);
 
   // Listen for SGPA saves from the SGPA tab and refresh from storage
   useEffect(() => {
@@ -161,29 +162,36 @@ export function CgpaCalculator() {
           ))}
         </div>
 
-        <div className="grid gap-2 sm:grid-cols-2">
+        <div className="grid gap-2 sm:grid-cols-3">
           <Button variant="outline" onClick={() => setSems((xs) => [...xs, newSem(xs.length + 1)])}>
             <Plus className="mr-2 h-4 w-4" /> Add semester
           </Button>
           <Button
             variant="ghost"
             onClick={() => {
-              const prev = { studentName, sems, repeats };
+              setSnapshot({ studentName, sems, repeats });
               setStudentName("");
               setSems([newSem(1), newSem(2)]);
               setRepeats([]);
-              toast.success("CGPA form reset", {
-                action: {
-                  label: "Undo",
-                  onClick: () => {
-                    setStudentName(prev.studentName);
-                    setSems(prev.sems);
-                    setRepeats(prev.repeats);
-                  },
-                },
-              });
+              toast.success("CGPA form reset");
             }}
           >
+            <RotateCcw className="mr-2 h-4 w-4" /> Reset
+          </Button>
+          <Button
+            variant="ghost"
+            disabled={!snapshot}
+            onClick={() => {
+              if (!snapshot) return;
+              setStudentName(snapshot.studentName);
+              setSems(snapshot.sems);
+              setRepeats(snapshot.repeats);
+              setSnapshot(null);
+              toast.success("Reset undone");
+            }}
+          >
+            <Undo2 className="mr-2 h-4 w-4" /> Undo
+          </Button>
             <RotateCcw className="mr-2 h-4 w-4" /> Reset
           </Button>
         </div>
