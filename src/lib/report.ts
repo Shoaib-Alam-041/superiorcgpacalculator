@@ -12,6 +12,14 @@ interface SgpaReport {
 interface CgpaReport {
   studentName: string;
   semesters: { label: string; sgpa: number; credits: number }[];
+  repeats?: {
+    course: string;
+    credits: number;
+    oldGrade: string;
+    newGrade: string;
+    delta: number;
+  }[];
+  baseCgpa?: number;
   cgpa: number;
   totalCredits: number;
 }
