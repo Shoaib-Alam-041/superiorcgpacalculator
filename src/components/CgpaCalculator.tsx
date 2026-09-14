@@ -5,9 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { computeGPA } from "@/lib/grading";
+import { computeGPA, getGradeByName } from "@/lib/grading";
 import { downloadCgpaReport } from "@/lib/report";
 import { usePersistentState } from "@/hooks/usePersistentState";
+import { SummerRepeats, type Repeat } from "@/components/SummerRepeats";
 
 interface Sem {
   id: string;
