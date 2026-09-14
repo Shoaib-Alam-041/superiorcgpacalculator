@@ -12,6 +12,14 @@ interface SgpaReport {
 interface CgpaReport {
   studentName: string;
   semesters: { label: string; sgpa: number; credits: number }[];
+  repeats?: {
+    course: string;
+    credits: number;
+    oldGrade: string;
+    newGrade: string;
+    delta: number;
+  }[];
+  baseCgpa?: number;
   cgpa: number;
   totalCredits: number;
 }
@@ -78,6 +86,22 @@ export function downloadCgpaReport(r: CgpaReport) {
         `<tr><td>${escape(s.label)}</td><td>${s.sgpa.toFixed(2)}</td><td>${s.credits}</td><td>${(s.sgpa * s.credits).toFixed(2)}</td></tr>`,
     )
     .join("");
+  const repeatRows = (r.repeats ?? [])
+    .map(
+      (x) =>
+        `<tr><td>${escape(x.course)}</td><td>${x.credits}</td><td>${escape(x.oldGrade)}</td><td>${escape(x.newGrade)}</td><td>${x.delta >= 0 ? "+" : ""}${x.delta.toFixed(2)}</td></tr>`,
+    )
+    .join("");
+  const repeatsSection = repeatRows
+    ? `<h1 style="font-size:18px;margin-top:8px;">Summer / Repeated Courses</h1>
+       <div class="sub">Old grades replaced by the new summer grades${
+         r.baseCgpa != null ? ` · CGPA before replacement: ${r.baseCgpa.toFixed(2)}` : ""
+       }</div>
+       <table>
+         <thead><tr><th>Course</th><th>Credits</th><th>Old Grade</th><th>New Grade</th><th>Quality Point Change</th></tr></thead>
+         <tbody>${repeatRows}</tbody>
+       </table>`
+    : "";
   const html = `<!doctype html><html><head><title>CGPA Report</title><style>${baseStyles}</style></head><body>
     <h1>CGPA Report</h1>
     <div class="sub">Generated ${new Date().toLocaleDateString()}</div>
@@ -86,6 +110,7 @@ export function downloadCgpaReport(r: CgpaReport) {
       <thead><tr><th>Semester</th><th>SGPA</th><th>Credits</th><th>Quality Points</th></tr></thead>
       <tbody>${rows}</tbody>
     </table>
+    ${repeatsSection}
     <div class="result">
       <div><div class="lbl">CGPA</div><div class="big">${r.cgpa.toFixed(2)}</div></div>
       <div><div class="lbl">Total Credits</div><div class="big">${r.totalCredits}</div></div>
