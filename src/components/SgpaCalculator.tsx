@@ -1,5 +1,5 @@
-import { useEffect, useMemo } from "react";
-import { Plus, Trash2, Download, Calculator, Save, RotateCcw } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { Plus, Trash2, Download, Calculator, Save, RotateCcw, Undo2 } from "lucide-react";
 import { toast } from "sonner";
 import { usePersistentState } from "@/hooks/usePersistentState";
 import { Button } from "@/components/ui/button";
@@ -38,6 +38,7 @@ export function SgpaCalculator() {
   const [studentName, setStudentName] = usePersistentState<string>("sgpa.studentName", "");
   const [semester, setSemester] = usePersistentState<string>("sgpa.semester", "");
   const [courses, setCourses] = usePersistentState<Course[]>("sgpa.courses", [newCourse(), newCourse(), newCourse()]);
+  const [snapshot, setSnapshot] = useState<{ studentName: string; semester: string; courses: Course[] } | null>(null);
 
   // Refresh from storage when a result card fills the fields
   useEffect(() => {
@@ -238,7 +239,7 @@ export function SgpaCalculator() {
           </div>
         </div>
 
-        <div className="grid gap-2 sm:grid-cols-2">
+        <div className="grid gap-2 sm:grid-cols-3">
           <Button
             variant="secondary"
             onClick={() => {
@@ -265,23 +266,28 @@ export function SgpaCalculator() {
           <Button
             variant="ghost"
             onClick={() => {
-              const prev = { studentName, semester, courses };
+              setSnapshot({ studentName, semester, courses });
               setStudentName("");
               setSemester("");
               setCourses([newCourse(), newCourse(), newCourse()]);
-              toast.success("SGPA form reset", {
-                action: {
-                  label: "Undo",
-                  onClick: () => {
-                    setStudentName(prev.studentName);
-                    setSemester(prev.semester);
-                    setCourses(prev.courses);
-                  },
-                },
-              });
+              toast.success("SGPA form reset");
             }}
           >
             <RotateCcw className="mr-2 h-4 w-4" /> Reset
+          </Button>
+          <Button
+            variant="ghost"
+            disabled={!snapshot}
+            onClick={() => {
+              if (!snapshot) return;
+              setStudentName(snapshot.studentName);
+              setSemester(snapshot.semester);
+              setCourses(snapshot.courses);
+              setSnapshot(null);
+              toast.success("Reset undone");
+            }}
+          >
+            <Undo2 className="mr-2 h-4 w-4" /> Undo
           </Button>
         </div>
 
